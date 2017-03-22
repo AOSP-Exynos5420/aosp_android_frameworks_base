@@ -240,7 +240,6 @@ public class NotificationManagerService extends SystemService {
 
 //+++
     private Light mButtonLight;
-    private Light mColortoneLight;
 //===
     private Light mNotificationLight;
     Light mAttentionLight;
@@ -272,7 +271,6 @@ public class NotificationManagerService extends SystemService {
 
 //+++
     private boolean mButtonLightEnabled = true;
-    private int mColortoneMode = Settings.System.SCREEN_COLORTONE_AUTO;
 //===
 
     // used as a mutex for access to all active notifications & listeners
@@ -845,8 +843,6 @@ public class NotificationManagerService extends SystemService {
         private final Uri NOTIFICATION_RATE_LIMIT_URI
                 = Settings.Global.getUriFor(Settings.Global.MAX_NOTIFICATION_ENQUEUE_RATE);
 //+++
-        private final Uri SCREEN_COLORTONE_URI
-                = Settings.System.getUriFor(Settings.System.SCREEN_COLORTONE);
         private final Uri BUTTON_LIGHT_URI
                 = Settings.System.getUriFor(Settings.System.BUTTON_LIGHT);
 //===
@@ -863,8 +859,6 @@ public class NotificationManagerService extends SystemService {
                     false, this, UserHandle.USER_ALL);
 //+++
             resolver.registerContentObserver(BUTTON_LIGHT_URI,
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SCREEN_COLORTONE_URI,
                     false, this, UserHandle.USER_ALL);
 //===
             update(null);
@@ -890,15 +884,6 @@ public class NotificationManagerService extends SystemService {
             }
 
 //+++
-            if (uri == null || SCREEN_COLORTONE_URI.equals(uri)) {
-                int colortone = Settings.System.getInt(resolver,
-                            Settings.System.SCREEN_COLORTONE, Settings.System.SCREEN_COLORTONE_AUTO);
-
-                if (mColortoneMode != colortone) {
-                    mColortoneMode = colortone;
-                    mColortoneLight.setBrightness(mColortoneMode);
-                }
-            }
             if (uri == null || BUTTON_LIGHT_URI.equals(uri)) {
                 boolean buttonLight = Settings.System.getInt(resolver,
                             Settings.System.BUTTON_LIGHT, Settings.System.BUTTON_LIGHT_ON) == Settings.System.BUTTON_LIGHT_ON;
@@ -1043,7 +1028,6 @@ public class NotificationManagerService extends SystemService {
 
         final LightsManager lights = getLocalService(LightsManager.class);
 //+++
-        mColortoneLight = lights.getLight(LightsManager.LIGHT_ID_COLORTONE);
         mButtonLight = lights.getLight(LightsManager.LIGHT_ID_BUTTONS);
 //===
         mNotificationLight = lights.getLight(LightsManager.LIGHT_ID_NOTIFICATIONS);
@@ -1183,8 +1167,6 @@ public class NotificationManagerService extends SystemService {
             else {
                 mButtonLight.turnOff();
             }
-
-            mColortoneLight.setBrightness(mColortoneMode);
 //===
 
             // Grab our optional AudioService
@@ -2459,7 +2441,6 @@ public class NotificationManagerService extends SystemService {
                     pw.println("  mNotificationPulseEnabled=" + mNotificationPulseEnabled);
 //+++
                     pw.println("  mButtonLightEnabled=" + mButtonLightEnabled);
-                    pw.println("  mColortoneMode=" + mColortoneMode);
 //===
                     pw.println("  mSoundNotificationKey=" + mSoundNotificationKey);
                     pw.println("  mVibrateNotificationKey=" + mVibrateNotificationKey);
