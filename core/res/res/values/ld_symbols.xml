@@ -38,4 +38,9 @@
 
   <!-- Internal default to navigation bar value -->
   <java-symbol type="bool" name="config_defaultToNavigationBar" />
+
+  <!-- Reboot and reboot to recovery -->
+  <java-symbol type="string" name="global_action_reboot" />
+  <java-symbol type="string" name="global_action_recovery" />
+  <java-symbol type="drawable" name="ic_lock_reboot" />
 </resources>
